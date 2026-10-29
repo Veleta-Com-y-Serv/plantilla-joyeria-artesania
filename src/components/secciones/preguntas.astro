@@ -1,0 +1,45 @@
+---
+// Preguntas frecuentes: banda clara partida (titular a la izquierda, fijo al bajar en escritorio; acordeón nativo
+// <details> a la derecha con filetes de oro y un rombo que gira). Sin JavaScript.
+// Campos: antetitulo, titulo, texto y preguntas[] {pregunta, respuesta}. Sin preguntas no se pinta.
+// También sirve de diseño para apartados nuevos (`tipo: preguntas`).
+import { seccion } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const preguntas = s ? s.preguntas.filter((p) => p && p.pregunta) : [];
+---
+
+{
+  s && preguntas.length > 0 && (
+    <Seccion id={Astro.props.id} banda="clara">
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+        <div class="lg:sticky lg:top-28 lg:self-start">
+          <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} class="mb-0" />
+        </div>
+        <div class="faq-lista">
+          {preguntas.map((p) => (
+            <details class="faq">
+              <summary class="flex min-h-[3.5rem] items-center justify-between gap-6 py-6">
+                <span class="font-display text-[1.45rem] leading-snug md:text-[1.85rem]">{p.pregunta}</span>
+                <span class="faq-signo" aria-hidden="true" />
+              </summary>
+              {p.respuesta && <p class="max-w-[42rem] pb-8 text-lg opacity-80">{p.respuesta}</p>}
+            </details>
+          ))}
+        </div>
+      </div>
+    </Seccion>
+  )
+}
+
+<style>
+  .faq-lista { border-bottom: 1px solid var(--linea-oro); }
+  .faq { border-top: 1px solid var(--linea-oro); }
+  .faq summary { list-style: none; cursor: pointer; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq-signo { flex: none; width: .8rem; height: .8rem; border: 1px solid var(--oro-sobre-claro); transform: rotate(45deg); transition: transform .25s ease, background-color .25s ease; }
+  .faq[open] .faq-signo { transform: rotate(225deg); background: var(--c-acento); border-color: var(--c-acento); }
+  .faq summary:hover .faq-signo { background: color-mix(in srgb, var(--c-acento) 40%, transparent); }
+</style>

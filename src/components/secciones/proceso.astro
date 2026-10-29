@@ -1,0 +1,45 @@
+---
+// Cómo nace una pieza: franja de foto a sangre (mesa del taller, con el filete de vitrina) y, debajo, banda negra
+// con los pasos en columnas (1 en móvil, 2 en tableta, 4 en escritorio) numerados en romanos sobre un filete de oro.
+// Campos: antetitulo, titulo, texto, imagen y items[] {titulo, texto, duracion}.
+import { seccion, romano } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const pasos = s ? s.items.filter((it) => it && it.titulo) : [];
+const columnas = pasos.length >= 4 ? 'lg:grid-cols-4' : pasos.length === 3 ? 'lg:grid-cols-3' : '';
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class="banda-oscura">
+      {s.imagen && (
+        <div class="marco aspect-[16/9] md:aspect-[21/8]">
+          <Imagen src={s.imagen} alt={altSeccion(s)} ancho={2100} alto={800} class="absolute inset-0" />
+        </div>
+      )}
+      <div class="contenedor py-[var(--ritmo)] md:py-[var(--ritmo-md)]">
+        <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} alinear="centro" class="mb-14 md:mb-20" />
+        {pasos.length > 0 && (
+          <ol class:list={['grid gap-x-10 gap-y-12 md:grid-cols-2', columnas]}>
+            {pasos.map((p, i) => (
+              <li class="paso">
+                <p class="numeral text-5xl md:text-6xl" aria-hidden="true">{romano(i + 1)}</p>
+                <h3 class="mt-5 text-[1.75rem] md:text-[2.1rem]">{p.titulo}</h3>
+                {p.texto && <p class="mt-3 opacity-75">{p.texto}</p>}
+                {p.duracion && <p class="mt-5"><span class="punzon text-acento">{String(p.duracion)}</span></p>}
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .paso { border-top: 1px solid var(--linea-oro); padding-top: 2rem; position: relative; }
+  .paso::before { content: ""; position: absolute; top: -4px; left: 0; width: 7px; height: 7px; background: var(--c-acento); transform: rotate(45deg); }
+</style>

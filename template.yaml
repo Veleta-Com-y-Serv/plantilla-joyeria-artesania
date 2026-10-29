@@ -1,0 +1,92 @@
+# Metadatos de la plantilla para el catálogo de NoExpertise.
+id: joyeria-artesania
+nombre: Joyería y artesanía
+descripcion: Web a ancho completo para joyerías y talleres artesanos, con fotos de producto a sangre y vitrina.
+sectores:
+  - { id: joyeria, nombre: Joyería }
+  - { id: artesania, nombre: Artesanía }
+  - { id: relojeria, nombre: Relojería }
+  - { id: ceramica, nombre: Cerámica }
+  - { id: taller-artesano, nombre: Taller artesano }
+secciones:
+  - { id: hero, nombre: Portada }
+  - { id: colecciones, nombre: Colecciones }
+  - { id: piezas, nombre: Piezas }
+  - { id: sobre, nombre: El taller }
+  - { id: proceso, nombre: Cómo nace una pieza }
+  - { id: encargos, nombre: Encargos a medida }
+  - { id: galeria, nombre: Galería }
+  - { id: opiniones, nombre: Opiniones }
+  - { id: preguntas, nombre: Preguntas frecuentes }
+  - { id: contacto, nombre: Contacto }
+estilo: refinado
+plan_minimo: presencia
+version: 1.0.0
+base: astrowind
+demo_url: https://demo-plantilla-joyeria-artesania.noexpertise.com
+activa: true
+orden: 340
+
+# Asistente de puesta en marcha (NoExpertise): un paso por pantalla. Rutas del site sin índices;
+# tipos: texto y lista (la IA propone), datos, fotos, eleccion (colores y logo) y repaso.
+asistente:
+  - id: negocio
+    titulo: "Tu taller"
+    pregunta: "¿Cómo se llama tu joyería o tu taller y qué hacéis?"
+    ayuda: "Qué piezas hacéis, con qué materiales y dónde estáis."
+    tipo: texto
+    campos: [nombre, eslogan, secciones.hero.antetitulo, secciones.hero.titulo, secciones.hero.texto, seo.titulo, seo.descripcion]
+  - id: contacto
+    titulo: "Cómo te encuentran"
+    pregunta: "¿Dónde está el taller o la tienda y cómo os pueden llamar o escribir?"
+    ayuda: "Solo lo que quieras que vean tus clientes. Lo que dejes vacío no sale en tu web."
+    tipo: datos
+    campos: [contacto.telefono, contacto.whatsapp, contacto.email, contacto.direccion, contacto.horario, redes.instagram, redes.facebook]
+  - id: colecciones
+    titulo: "Tus colecciones"
+    pregunta: "¿Qué colecciones o líneas de trabajo tenéis? Nombre, de qué va cada una y el material. Una por línea."
+    ayuda: "Las fotos las pones luego en Contenido."
+    tipo: lista
+    campos: [secciones.colecciones.colecciones]
+  - id: piezas
+    titulo: "Tus piezas"
+    pregunta: "Cuéntame algunas piezas que tengas ahora: nombre, material, tipo (anillo, pendientes…) y el precio si quieres. Una por línea."
+    ayuda: "Si lo prefieres, añádelas luego en Contenido con su foto."
+    tipo: lista
+    campos: [secciones.piezas.piezas]
+  - id: sobre
+    titulo: "Tu historia"
+    pregunta: "Cuéntame cómo nació el taller y cómo trabajáis las piezas."
+    tipo: texto
+    campos: [secciones.sobre.titulo, secciones.sobre.declaracion, secciones.sobre.texto]
+  - id: equipo
+    titulo: "Quién trabaja en el taller"
+    pregunta: "¿Quién forma el equipo? Nombre y qué hace cada uno, uno por línea."
+    ayuda: "Las fotos las pones luego en Contenido."
+    tipo: lista
+    campos: [secciones.sobre.personas]
+  - id: encargos
+    titulo: "Encargos a medida"
+    pregunta: "¿Qué encargos aceptáis (alianzas, transformar joyas, grabados, arreglos…) y cómo es la primera cita?"
+    tipo: texto
+    campos: [secciones.encargos.titulo, secciones.encargos.texto, secciones.encargos.items]
+  - id: preguntas
+    titulo: "Preguntas frecuentes"
+    pregunta: "¿Qué os preguntan más a menudo (plazos, tallas, garantía, envíos)? Escribe cada pregunta y lo que respondéis."
+    ayuda: "Si lo prefieres, añádelas luego en Contenido."
+    tipo: lista
+    campos: [secciones.preguntas.preguntas]
+  - id: fotos
+    titulo: "Tus fotos"
+    pregunta: "Pon una foto de portada (una joya sobre fondo oscuro queda muy bien) y, si quieres, la del taller, la de la mesa de trabajo y la de la fachada."
+    ayuda: "Sube las tuyas o elige una del banco. Las que no cambies se quedan como están."
+    tipo: fotos
+    campos: [secciones.hero.imagen, secciones.sobre.imagen, secciones.proceso.imagen, secciones.contacto.imagen]
+  - id: aspecto
+    titulo: "Colores y logo"
+    pregunta: "Elige los colores de tu web y, si tienes, tu logo."
+    tipo: eleccion
+    campos: [colores.primario, colores.acento, logo]
+  - id: repaso
+    titulo: "Repaso"
+    tipo: repaso

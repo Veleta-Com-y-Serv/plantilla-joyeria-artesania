@@ -1,0 +1,55 @@
+---
+// Contacto: banda marfil partida a sangre. Foto de la fachada hasta el borde (si la hay) y, al lado, el teléfono
+// enorme en serif, la dirección, el horario, botones de WhatsApp y de cómo llegar, y el formulario (mailto).
+// Campos: antetitulo, titulo, texto e imagen; los datos salen de site.yaml → contacto.
+import { seccion, site, tel, whatsapp, mapa } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Imagen from '../ui/Imagen.astro';
+import FormularioContacto from '../ui/FormularioContacto.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const c = site.contacto;
+---
+
+{
+  s && (
+    <section id={id} class:list={['banda-marfil grid', { 'lg:grid-cols-2': s.imagen }]}>
+      {s.imagen && (
+        <div class="marco aspect-[4/3] lg:aspect-auto lg:min-h-full">
+          <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1200} alto={1200} class="absolute inset-0" />
+        </div>
+      )}
+      <div class:list={['px-4 py-16 md:px-12 md:py-24 lg:px-20', s.imagen ? 'xl:pr-[max(5rem,calc((100vw-90rem)/2+2rem))]' : 'contenedor']}>
+        {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+        {s.titulo && <h2 class="titulo-seccion">{s.titulo}</h2>}
+        {s.texto && <p class="mt-6 max-w-[36rem] text-lg opacity-85">{s.texto}</p>}
+        {c.telefono && (
+          <p class="mt-10">
+            <a class="contacto-telefono" href={tel(c.telefono)}>{c.telefono}</a>
+          </p>
+        )}
+        <dl class="mt-10 grid gap-6 sm:grid-cols-2">
+          {c.direccion && <div class="filete-oro pt-4"><dt class="contacto-dt">Dirección</dt><dd class="mt-2">{c.direccion}</dd></div>}
+          {c.horario && <div class="filete-oro pt-4"><dt class="contacto-dt">Horario</dt><dd class="mt-2">{c.horario}</dd></div>}
+          {c.email && <div class="filete-oro pt-4 sm:col-span-2"><dt class="contacto-dt">Correo</dt><dd class="mt-2 break-all"><a class="underline underline-offset-4" href={`mailto:${c.email}`}>{c.email}</a></dd></div>}
+        </dl>
+        {(c.whatsapp || c.direccion) && (
+          <div class="mt-10 flex flex-wrap gap-3">
+            {c.whatsapp && <a class="btn" href={whatsapp(c.whatsapp, `Hola, os escribo desde la web de ${site.nombre}.`)} rel="noopener" target="_blank">WhatsApp</a>}
+            {c.direccion && <a class="btn-sec" href={mapa(c.direccion)} rel="noopener" target="_blank">Cómo llegar</a>}
+          </div>
+        )}
+        <div class="filete-oro mt-14 max-w-[38rem] pt-10">
+          <FormularioContacto prefijo={`${id}-f`} boton="Enviar mensaje" />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .contacto-telefono { font-family: var(--fuente-titulos); font-size: clamp(2.6rem, 6vw, 5rem); line-height: 1; text-decoration: none; white-space: nowrap; }
+  .contacto-telefono:hover { color: var(--oro-sobre-claro); }
+  .contacto-dt { font-size: .68rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--oro-sobre-claro); }
+</style>

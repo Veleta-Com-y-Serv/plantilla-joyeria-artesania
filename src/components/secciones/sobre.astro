@@ -1,0 +1,66 @@
+---
+// El taller: fila 50/50 con la foto del banco de trabajo a sangre (filete de vitrina) y, al lado, la historia y el
+// equipo; debajo, la declaración en una banda dorada a todo el ancho con una cita enorme.
+// Campos: antetitulo, titulo, texto (párrafos), imagen, declaracion y personas[] {nombre, cargo, foto}.
+import { seccion, parrafos } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const declaracion = String(s?.declaracion ?? '').trim();
+const textos = parrafos(s?.texto);
+const hayFila = !!(s && (s.titulo || s.antetitulo || textos.length || s.imagen || s.personas.length));
+---
+
+{
+  s && (
+    <section id={Astro.props.id}>
+      {hayFila && (
+        <div class:list={['banda-clara grid', { 'md:grid-cols-2': s.imagen }]}>
+          {s.imagen && (
+            <div class="marco aspect-[4/5] md:aspect-auto md:min-h-[86svh]">
+              <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1100} alto={1400} class="absolute inset-0" />
+            </div>
+          )}
+          <div class:list={['flex flex-col justify-center px-4 py-16 md:px-12 md:py-24 lg:px-20', s.imagen ? 'xl:pr-[max(5rem,calc((100vw-90rem)/2+2rem))]' : 'contenedor']}>
+            {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+            {s.titulo && <h2 class="titulo-seccion max-w-[40rem]">{s.titulo}</h2>}
+            {textos.length > 0 && (
+              <div class="mt-8 max-w-[36rem] space-y-5 text-lg opacity-85">
+                {textos.map((p) => <p>{p}</p>)}
+              </div>
+            )}
+            {s.personas.length > 0 && (
+              <ul class="equipo mt-12 grid gap-y-5 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-8">
+                {s.personas.map((p) => (
+                  <li class:list={['items-center gap-x-5 lg:block', { 'grid grid-cols-[4.5rem_1fr]': p.foto }]}>
+                    {p.foto && <Imagen src={p.foto} alt={p.nombre} ancho={300} alto={400} class="aspect-[3/4] w-full object-cover lg:mb-4 lg:max-w-[11rem]" />}
+                    <div>
+                      <p class="font-display text-xl leading-tight">{p.nombre}</p>
+                      {p.cargo && <p class="equipo-cargo mt-1">{p.cargo}</p>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
+      {declaracion && (
+        <div class="banda-oro">
+          <figure class="contenedor py-20 text-center md:py-32">
+            <span class="declaracion-comillas" aria-hidden="true">“</span>
+            <blockquote class="declaracion mx-auto max-w-[68rem]">{declaracion}</blockquote>
+          </figure>
+        </div>
+      )}
+    </section>
+  )
+}
+
+<style>
+  .equipo { border-top: 1px solid var(--linea-oro); padding-top: 2rem; }
+  .equipo-cargo { font-size: .66rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--oro-sobre-claro); }
+  .declaracion { font-family: var(--fuente-titulos); font-style: italic; font-size: clamp(1.9rem, 4.4vw, 4.25rem); line-height: 1.12; letter-spacing: -0.01em; text-wrap: balance; }
+  .declaracion-comillas { display: block; font-family: var(--fuente-titulos); font-size: clamp(5rem, 10vw, 9rem); line-height: .6; height: .45em; }
+</style>

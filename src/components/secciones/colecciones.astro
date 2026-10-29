@@ -1,0 +1,46 @@
+---
+// Colecciones: un titular partido y, debajo, una fila 50/50 por colección con la foto de producto a sangre
+// (toca el borde de la ventana, con el filete de la vitrina) y el texto al lado, en zigzag y alternando la banda
+// clara y la negra. Campos: antetitulo, titulo, texto, cta (enlace de cada fila) y
+// colecciones[] {nombre, texto, detalle, imagen}. Sin colecciones no se pinta.
+import { seccion, romano } from '../../data/site';
+import { altFicha } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const colecciones = s ? s.colecciones : [];
+---
+
+{
+  s && colecciones.length > 0 && (
+    <section id={Astro.props.id} class="banda-clara">
+      <div class="contenedor pt-[var(--ritmo)] md:pt-[var(--ritmo-md)]">
+        <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} alinear="partido" class="mb-12 md:mb-20" />
+      </div>
+      <ol>
+        {colecciones.map((c, i) => {
+          const oscura = i % 2 === 1;
+          return (
+            <li class:list={['grid md:min-h-[78svh] md:grid-cols-2', oscura ? 'banda-oscura' : 'banda-clara']}>
+              <div class:list={['marco aspect-[4/3] md:aspect-auto', { 'md:order-2': oscura }]}>
+                {c.imagen && <Imagen src={c.imagen} alt={altFicha(c)} ancho={1400} alto={1050} class="absolute inset-0" />}
+              </div>
+              <div class:list={['flex flex-col justify-center px-4 py-14 md:px-12 md:py-20 lg:px-20', oscura ? 'xl:pl-[max(5rem,calc((100vw-90rem)/2+2rem))]' : 'xl:pr-[max(5rem,calc((100vw-90rem)/2+2rem))]']}>
+                <p class="numeral text-6xl md:text-8xl" aria-hidden="true">{romano(i + 1)}</p>
+                <h3 class="mt-6 text-[clamp(2.4rem,4.6vw,4.5rem)]">{c.nombre}</h3>
+                {c.detalle && <p class="mt-6"><span class="punzon">{c.detalle}</span></p>}
+                {c.texto && <p class="mt-6 max-w-[34rem] text-lg opacity-85">{c.texto}</p>}
+                {s.cta?.url && (
+                  <p class="mt-10">
+                    <a class="enlace-oro" href={s.cta.url}>{s.cta.texto} <span aria-hidden="true">→</span></a>
+                  </p>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  )
+}

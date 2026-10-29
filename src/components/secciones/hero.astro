@@ -1,0 +1,56 @@
+---
+// Portada partida a sangre: a la izquierda el negro del estuche con el titular enorme en serif; a la derecha la
+// foto de producto hasta el borde de la ventana, con el filete dorado de la vitrina. En móvil, la foto llena la
+// pantalla detrás del texto con un velo. Campos: antetitulo, titulo, texto, imagen, cta, cta_secundario.
+import { seccion, site, tel } from '../../data/site';
+import { altHero, localidad } from '../../lib/seo';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string; primera?: boolean }
+const { id, primera = false } = Astro.props;
+const s = seccion(id);
+const lugar = localidad();
+const conFoto = !!s?.imagen;
+---
+
+{
+  s && (
+    <section id={id} class:list={['hero banda-oscura relative grid min-h-[88svh] overflow-hidden', { 'md:grid-cols-2': conFoto }]}>
+      {conFoto && (
+        <div class="marco absolute inset-0 md:relative md:order-2 md:min-h-[88svh]">
+          <Imagen src={s.imagen} alt={altHero()} ancho={1200} alto={1500} prioridad={primera} class="absolute inset-0" />
+          <div class="hero-velo absolute inset-0 md:hidden" aria-hidden="true" />
+          {lugar && (
+            <span class="hero-lugar absolute right-6 bottom-10 hidden md:block" aria-hidden="true">{lugar}</span>
+          )}
+        </div>
+      )}
+      <div class:list={['relative z-10 flex flex-col justify-end px-4 pt-40 pb-14 md:justify-center md:px-10 md:py-20 lg:px-16 xl:pl-[max(4rem,calc((100vw-90rem)/2+2rem))]', { 'md:items-center md:text-center': !conFoto }]}>
+        <div class="max-w-[42rem]">
+          {s.antetitulo && <p class:list={['antetitulo', { 'justify-center': !conFoto }]}>{s.antetitulo}</p>}
+          <h1 class="hero-titulo mt-6">{s.titulo || site.nombre}</h1>
+          {s.texto && <p class="mt-7 max-w-[34rem] text-lg opacity-85 md:text-xl">{s.texto}</p>}
+          {(s.cta?.url || s.cta_secundario?.url) && (
+            <div class:list={['mt-10 flex flex-wrap gap-3', { 'justify-center': !conFoto }]}>
+              {s.cta?.url && <a class="btn" href={s.cta.url}>{s.cta.texto}</a>}
+              {s.cta_secundario?.url && <a class="btn-sec" href={s.cta_secundario.url}>{s.cta_secundario.texto}</a>}
+            </div>
+          )}
+          {(lugar || site.contacto.telefono) && (
+            <p class="hero-datos mt-12 flex flex-wrap gap-x-6 gap-y-2 pt-5">
+              {lugar && <span>{lugar}</span>}
+              {site.contacto.telefono && <a href={tel(site.contacto.telefono)}>{site.contacto.telefono}</a>}
+            </p>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .hero-titulo { font-size: clamp(2.75rem, 7vw, 7rem); line-height: .98; letter-spacing: -0.02em; }
+  .hero-velo { background: linear-gradient(to top, var(--c-primario) 18%, color-mix(in srgb, var(--c-primario) 70%, transparent) 55%, color-mix(in srgb, var(--c-primario) 25%, transparent)); }
+  .hero-lugar { writing-mode: vertical-rl; transform: rotate(180deg); color: var(--c-fondo); font-size: .7rem; font-weight: 600; letter-spacing: .4em; text-transform: uppercase; right: 2.6rem; bottom: 3rem; text-shadow: 0 1px 8px rgb(0 0 0 / .5); }
+  .hero-datos { border-top: 1px solid var(--linea-oro); font-size: .72rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--c-acento); }
+  .hero-datos a { text-decoration: none; min-height: 1.5rem; }
+</style>

@@ -1,0 +1,41 @@
+---
+// Opiniones: banda negra con la primera opinión como cita enorme en serif cursiva a todo el ancho y las demás en
+// columnas (2 en tableta, 3 en escritorio) sobre filetes de oro. Campos: antetitulo, titulo, texto y
+// testimonios[] {texto, autor}. Sin opiniones no se pinta.
+import { seccion } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const lista = s ? s.testimonios.filter((t) => t && t.texto) : [];
+const [primera, ...resto] = lista;
+---
+
+{
+  s && primera && (
+    <Seccion id={Astro.props.id} banda="oscura">
+      <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} alinear="centro" class="mb-14 md:mb-20" />
+      <figure class="mx-auto max-w-[72rem] text-center">
+        <span class="opinion-comillas" aria-hidden="true">“</span>
+        <blockquote class="opinion-grande">{primera.texto}</blockquote>
+        {primera.autor && <figcaption class="opinion-autor mt-8">{primera.autor}</figcaption>}
+      </figure>
+      {resto.length > 0 && (
+        <ul class:list={['mt-16 grid gap-10 md:mt-24 md:grid-cols-2', { 'lg:grid-cols-3': resto.length >= 3 }]}>
+          {resto.map((t) => (
+            <li class="filete-oro pt-8">
+              <blockquote class="font-display text-2xl leading-snug italic md:text-[1.75rem]">{t.texto}</blockquote>
+              {t.autor && <p class="opinion-autor mt-5">{t.autor}</p>}
+            </li>
+          ))}
+        </ul>
+      )}
+    </Seccion>
+  )
+}
+
+<style>
+  .opinion-comillas { display: block; font-family: var(--fuente-titulos); color: var(--c-acento); font-size: clamp(5rem, 10vw, 9rem); line-height: .6; height: .45em; }
+  .opinion-grande { font-family: var(--fuente-titulos); font-style: italic; font-size: clamp(1.9rem, 4vw, 3.75rem); line-height: 1.15; text-wrap: balance; }
+  .opinion-autor { font-size: .7rem; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: var(--c-acento); }
+</style>

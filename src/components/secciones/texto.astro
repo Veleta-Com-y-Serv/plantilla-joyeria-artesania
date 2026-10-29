@@ -1,0 +1,44 @@
+---
+// Apartado de texto genérico (apartados nuevos del cliente: `tipo: texto`). Con imagen, fila 50/50 a sangre con
+// el filete de vitrina; sin imagen, banda clara a todo el ancho con el texto en dos columnas.
+// Campos: antetitulo, titulo, texto (párrafos), imagen, items[] {titulo, texto} y cta.
+import { seccion, parrafos } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const textos = parrafos(s?.texto);
+const items = s ? s.items.filter((it) => it && it.titulo) : [];
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class:list={['banda-clara', { 'grid md:grid-cols-2': s.imagen }]}>
+      {s.imagen && (
+        <div class="marco aspect-[4/3] md:aspect-auto md:min-h-[70svh]">
+          <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1200} alto={1000} class="absolute inset-0" />
+        </div>
+      )}
+      <div class:list={[s.imagen ? 'flex flex-col justify-center px-4 py-16 md:px-12 md:py-24 lg:px-20 xl:pr-[max(5rem,calc((100vw-90rem)/2+2rem))]' : 'contenedor py-[var(--ritmo)] md:py-[var(--ritmo-md)]']}>
+        {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+        {s.titulo && <h2 class="titulo-seccion max-w-[56rem]">{s.titulo}</h2>}
+        {textos.length > 0 && (
+          <div class:list={['mt-8 gap-10 text-lg opacity-85', s.imagen ? 'max-w-[38rem] space-y-5' : 'max-w-none md:columns-2 [&>p]:mb-5']}>
+            {textos.map((p) => <p>{p}</p>)}
+          </div>
+        )}
+        {items.length > 0 && (
+          <ul class:list={['mt-10 grid gap-x-10 gap-y-6', { 'md:grid-cols-2 lg:grid-cols-3': !s.imagen }]}>
+            {items.map((it) => (
+              <li class="filete-oro pt-5">
+                <h3 class="text-[1.5rem] leading-tight">{it.titulo}</h3>
+                {it.texto && <p class="mt-2 opacity-75">{it.texto}</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+        {s.cta?.url && <p class="mt-10"><a class="btn" href={s.cta.url}>{s.cta.texto}</a></p>}
+      </div>
+    </section>
+  )
+}

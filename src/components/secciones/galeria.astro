@@ -1,0 +1,42 @@
+---
+// Galería: titular en banda marfil y mosaico de fotos de borde a borde sin margen (la primera grande, 2×2 en
+// escritorio; 2 columnas en móvil, 3 en escritorio). Campos: antetitulo, titulo, texto y galeria[] (rutas).
+import { seccion } from '../../data/site';
+import { altGaleria } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const fotos = s ? s.galeria.filter((f) => typeof f === 'string' && f.trim()) : [];
+const n = fotos.length;
+const clase = (i: number) => {
+  if (i === 0) return n > 1 ? 'col-span-2 aspect-[4/3] md:row-span-2 md:aspect-square' : 'col-span-2 aspect-[16/9] md:col-span-3 md:aspect-[21/8]';
+  if (i === n - 1 && (n - 1) % 2 === 1) return 'col-span-2 aspect-[2/1] md:col-span-1 md:aspect-square';
+  return 'aspect-square';
+};
+---
+
+{
+  s && n > 0 && (
+    <section id={Astro.props.id} class="banda-marfil">
+      {(s.titulo || s.antetitulo || s.texto) && (
+        <div class="contenedor pt-[var(--ritmo)] pb-12 md:pt-[var(--ritmo-md)] md:pb-16">
+          <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} alinear="partido" class="mb-0" />
+        </div>
+      )}
+      <ul class="grid grid-cols-2 md:grid-cols-3">
+        {fotos.map((f, i) => (
+          <li class:list={['galeria-celda relative overflow-hidden', clase(i)]}>
+            <Imagen src={f} alt={altGaleria(i)} ancho={i === 0 ? 1200 : 700} alto={i === 0 ? 1200 : 700} class="absolute inset-0 h-full w-full object-cover" />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .galeria-celda { background: color-mix(in srgb, var(--c-primario) 90%, var(--c-acento)); }
+  .galeria-celda :global(img) { transition: transform .7s ease, filter .7s ease; filter: saturate(.92); }
+  .galeria-celda:hover :global(img) { transform: scale(1.035); filter: none; }
+</style>

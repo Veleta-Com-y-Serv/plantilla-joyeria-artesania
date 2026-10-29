@@ -1,0 +1,112 @@
+/* Joyería y artesanía — estilo refinado, concepto «estuche y vitrina»:
+   bandas a sangre negras como el terciopelo de un estuche, claras como el lino y doradas como el metal;
+   fotos de producto grandes que tocan el borde con un filete dorado por dentro (el marco de la vitrina);
+   serif de alto contraste muy grande, antetítulos en mayúsculas espaciadas con una línea de oro y
+   el material de cada pieza en un «punzón» (sello ovalado), como el contraste de la plata. */
+@import "tailwindcss";
+@import "./comun.css";
+@config "../../tailwind.config.mjs";
+
+:root {
+  --fuente-texto: "Gill Sans", "Gill Sans MT", Seravek, Optima, Candara, "Segoe UI", system-ui, sans-serif;
+  --fuente-titulos: "Bodoni 72", "Bodoni MT", Didot, "Didot LT STD", "Big Caslon", "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --radio: 0; --ritmo: 4.5rem; --ritmo-md: 7.5rem; --ancho: 90rem;
+  /* Derivados de los cuatro colores de site.yaml (aguantan los del cliente). */
+  --oro-sobre-claro: color-mix(in srgb, var(--c-acento) 52%, var(--c-texto));
+  --marfil: color-mix(in srgb, var(--c-fondo) 90%, var(--c-acento));
+  --linea-oro: color-mix(in srgb, var(--c-acento) 55%, transparent);
+}
+
+@layer base {
+  body { font-family: var(--fuente-texto); font-size: 1.0625rem; line-height: 1.6; background: var(--c-fondo); }
+  h1, h2, h3 { font-family: var(--fuente-titulos); font-weight: 400; letter-spacing: -0.012em; line-height: 1.04; }
+}
+
+@layer components {
+  /* Bandas a todo el ancho */
+  .banda-clara { background: var(--c-fondo); color: var(--c-texto); }
+  .banda-marfil { background: var(--marfil); color: var(--c-texto); }
+  .banda-oscura { background: var(--c-primario); color: var(--c-fondo); }
+  .banda-oro { background: var(--c-acento); color: var(--c-primario); }
+
+  /* Antetítulo: mayúsculas espaciadas con una línea de oro delante */
+  .antetitulo { display: flex; align-items: center; gap: .9rem; font-size: .72rem; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--oro-sobre-claro); }
+  .antetitulo::before { content: ""; width: 2.5rem; height: 1px; background: currentColor; flex: none; }
+  .banda-oscura .antetitulo { color: var(--c-acento); }
+  .banda-oro .antetitulo { color: var(--c-primario); }
+  .titular--centro .antetitulo { justify-content: center; }
+  .titular--centro .antetitulo::after { content: ""; width: 2.5rem; height: 1px; background: currentColor; flex: none; }
+
+  .titulo-seccion { font-size: clamp(2.4rem, 5.6vw, 5.25rem); margin-top: 1.1rem; }
+  .titular { margin-bottom: 3rem; }
+  .titular--centro { margin-inline: auto; text-align: center; max-width: 56rem; }
+  .titular-texto { margin-top: 1.25rem; max-width: 38rem; opacity: .82; font-size: 1.1rem; }
+  .titular--centro .titular-texto { margin-inline: auto; }
+  /* Titular partido: título a la izquierda, texto a la derecha (escritorio) */
+  .titular--partido { display: grid; gap: 0; }
+  @media (min-width: 900px) {
+    .titular--partido { grid-template-columns: 1.3fr 1fr; align-items: end; column-gap: 4rem; }
+    .titular--partido .titular-texto { justify-self: end; }
+  }
+
+  .numeral { font-family: var(--fuente-titulos); font-style: italic; color: var(--c-acento); line-height: 1; }
+  .banda-clara .numeral, .banda-marfil .numeral { color: var(--oro-sobre-claro); }
+
+  /* Botones: rectos, mayúsculas espaciadas */
+  .btn, .btn-sec { min-height: 3rem; padding: .7rem 1.75rem; font-size: .74rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; border: 1px solid transparent; border-radius: 0; }
+  .btn { background: var(--c-acento); color: var(--c-primario); border-color: var(--c-acento); }
+  .btn:hover { background: transparent; color: var(--c-acento); }
+  .banda-clara .btn:hover, .banda-marfil .btn:hover { background: var(--c-primario); color: var(--c-fondo); border-color: var(--c-primario); }
+  .banda-oro .btn { background: var(--c-primario); color: var(--c-fondo); border-color: var(--c-primario); }
+  .banda-oro .btn:hover { background: transparent; color: var(--c-primario); }
+  .btn-sec { background: transparent; color: inherit; border-color: currentColor; }
+  .btn-sec:hover { border-color: var(--c-acento); color: var(--c-acento); }
+  .banda-clara .btn-sec:hover, .banda-marfil .btn-sec:hover { border-color: currentColor; color: inherit; background: color-mix(in srgb, currentColor 8%, transparent); }
+  .enlace-oro { display: inline-flex; align-items: center; gap: .6rem; min-height: 2.75rem; font-size: .74rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--linea-oro); }
+  .enlace-oro:hover { border-bottom-color: currentColor; }
+
+  /* Marco de vitrina: filete dorado por dentro de una foto a sangre */
+  .marco { position: relative; overflow: hidden; background: color-mix(in srgb, var(--c-primario) 92%, var(--c-acento)); }
+  .marco::after { content: ""; position: absolute; inset: .875rem; border: 1px solid color-mix(in srgb, var(--c-acento) 75%, transparent); pointer-events: none; }
+  @media (min-width: 768px) { .marco::after { inset: 1.5rem; } }
+  .marco > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+  /* Punzón: el material de la pieza en un sello ovalado */
+  .punzon { display: inline-flex; align-items: center; min-height: 1.6rem; padding: .15rem .75rem; border: 1px solid currentColor; border-radius: 999px; font-size: .64rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; }
+
+  .filete-oro { border-top: 1px solid var(--linea-oro); }
+
+  /* Cabecera fija, siempre sólida (negro de estuche con filete de oro) */
+  .cabecera--estuche { position: sticky; top: 0; background: var(--c-primario); color: var(--c-fondo); border-bottom: 1px solid var(--linea-oro); }
+  .cabecera--estuche .cabecera-fila { min-height: 4.5rem; max-width: var(--ancho); }
+  .cabecera--estuche .marca-inicial { display: inline-grid; place-items: center; width: 2.4rem; height: 2.4rem; flex: none; border: 1px solid var(--c-acento); border-radius: 999px; color: var(--c-acento); font-family: var(--fuente-titulos); font-style: italic; font-size: 1.25rem; }
+  .cabecera--estuche .marca-nombre { font-family: var(--fuente-titulos); font-size: 1.35rem; letter-spacing: .01em; }
+  .cabecera--estuche .cabecera-nav { gap: 2rem; }
+  .cabecera--estuche .cabecera-nav a { font-size: .72rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; padding-block: .75rem; }
+  .cabecera--estuche .cabecera-nav a:hover { color: var(--c-acento); }
+  .cabecera--estuche .cabecera-cta { min-height: 2.75rem; padding-inline: 1.25rem; }
+  .cabecera--estuche .menu-movil summary { min-height: 2.75rem; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; }
+  .cabecera--estuche .menu-movil-panel { background: var(--c-primario); color: var(--c-fondo); padding: .5rem 1rem 1.5rem; border-bottom: 1px solid var(--linea-oro); }
+  .cabecera--estuche .menu-movil-panel a { font-family: var(--fuente-titulos); font-size: 1.5rem; border-bottom-color: color-mix(in srgb, var(--c-fondo) 14%, transparent); }
+  .cabecera--estuche .menu-movil-panel .btn { font-family: var(--fuente-texto); font-size: .74rem; }
+
+  /* Pie: negro con filete de oro arriba */
+  .pie--estuche { background: var(--c-primario); color: var(--c-fondo); border-top: 1px solid var(--linea-oro); padding-top: 4.5rem; }
+  .pie--estuche .pie-nombre { font-family: var(--fuente-titulos); font-weight: 400; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; }
+  .pie--estuche .pie-titulo { color: var(--c-acento); opacity: 1; letter-spacing: .26em; font-weight: 600; font-size: .7rem; }
+  .pie--estuche .pie-lista { font-size: .95rem; }
+  .pie--estuche .pie-lista a { display: inline-block; padding-block: .2rem; }
+  .pie--estuche .pie-redes a { border: 1px solid var(--linea-oro); border-radius: 999px; padding: .6rem; color: var(--c-acento); }
+  .pie--estuche .pie-legal a { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* Formulario de líneas finas */
+  .formulario .campo label { font-size: .7rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; }
+  .formulario .campo input, .formulario .campo textarea, .formulario .campo select { width: 100%; font: inherit; color: inherit; background: transparent; min-height: 2.75rem; padding: .6rem 0; border: 0; border-bottom: 1px solid color-mix(in srgb, currentColor 40%, transparent); border-radius: 0; }
+  .formulario .campo select option { color: #111; background: #fff; }
+  .formulario .campo input:focus-visible, .formulario .campo textarea:focus-visible, .formulario .campo select:focus-visible { outline: none; border-bottom-color: var(--c-acento); box-shadow: 0 1px 0 0 var(--c-acento); }
+  .formulario .campo-check a { text-decoration: underline; }
+  .formulario-doble { display: grid; gap: 1rem; }
+  @media (min-width: 640px) { .formulario-doble { grid-template-columns: 1fr 1fr; } }
+
+  .texto-largo h2 { font-family: var(--fuente-titulos); font-weight: 400; font-size: 1.7rem; }
+}

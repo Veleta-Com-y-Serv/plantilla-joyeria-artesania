@@ -1,0 +1,85 @@
+---
+// La vitrina: banda negra con las piezas en un mosaico de borde a borde (2 columnas en móvil, 3 en escritorio)
+// separado por filetes dorados, y filtro por categoría (botones; script pequeño en línea, sin JavaScript se ven
+// todas). Cada pieza: foto, categoría y estado, nombre, material en un punzón, texto y precio (sin precio no hay
+// precio). Campos: antetitulo, titulo, texto, cta opcional y piezas[] {nombre, texto, precio, material,
+// categoria, estado, imagen}. Sin piezas se queda el titular con el botón (si lo hay).
+import { seccion } from '../../data/site';
+import { altFicha } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const piezas = s ? s.piezas : [];
+const categorias = [...new Set(piezas.map((p) => String(p.categoria ?? '').trim()).filter(Boolean))];
+---
+
+{
+  s && (
+    <section id={id} class="banda-oscura">
+      <div class="contenedor pt-[var(--ritmo)] pb-12 md:pt-[var(--ritmo-md)] md:pb-16">
+        <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} alinear="partido" class="mb-0" />
+        {categorias.length > 1 && piezas.length > 0 && (
+          <div class="vitrina-filtro mt-10 flex flex-wrap gap-2" role="group" aria-label="Filtrar piezas por categoría" data-vitrina={id}>
+            <button type="button" class="filtro" aria-pressed="true" data-filtro="">Todas</button>
+            {categorias.map((c) => <button type="button" class="filtro" aria-pressed="false" data-filtro={c}>{c}</button>)}
+          </div>
+        )}
+        {piezas.length === 0 && s.cta?.url && <p class="mt-10"><a class="btn" href={s.cta.url}>{s.cta.texto}</a></p>}
+      </div>
+      {piezas.length > 0 && (
+        <ul class="vitrina grid grid-cols-2 md:grid-cols-3" id={`${id}-lista`}>
+          {piezas.map((p) => (
+            <li class="vitrina-pieza flex flex-col" data-categoria={String(p.categoria ?? '').trim()}>
+              <div class="vitrina-foto relative aspect-square overflow-hidden">
+                {p.imagen && <Imagen src={p.imagen} alt={altFicha(p)} ancho={800} alto={800} class="absolute inset-0 h-full w-full object-cover" />}
+                {p.estado && <span class="vitrina-estado absolute top-3 left-3 md:top-5 md:left-5">{p.estado}</span>}
+              </div>
+              <div class="flex flex-1 flex-col gap-3 px-4 pt-5 pb-7 md:px-8 md:pt-7 md:pb-10">
+                {p.categoria && <p class="vitrina-cat">{p.categoria}</p>}
+                <h3 class="text-[1.45rem] leading-tight md:text-[2rem]">{p.nombre}</h3>
+                {p.material && <p><span class="punzon text-acento">{p.material}</span></p>}
+                {p.texto && <p class="hidden text-[.95rem] opacity-75 sm:block">{p.texto}</p>}
+                {p.precio && <p class="vitrina-precio mt-auto pt-2">{p.precio}</p>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+      {piezas.length > 0 && s.cta?.url && (
+        <div class="contenedor py-12 text-center"><a class="btn" href={s.cta.url}>{s.cta.texto}</a></div>
+      )}
+    </section>
+  )
+}
+
+<style>
+  .vitrina { --filete: color-mix(in srgb, var(--c-acento) 38%, transparent); border-top: 1px solid var(--filete); }
+  .vitrina-pieza { min-width: 0; border-bottom: 1px solid var(--filete); border-right: 1px solid var(--filete); }
+  .vitrina-pieza[hidden] { display: none; }
+  .vitrina-foto { background: color-mix(in srgb, var(--c-primario) 90%, var(--c-acento)); }
+  .vitrina-foto :global(img) { transition: transform .6s ease; }
+  .vitrina-pieza:hover .vitrina-foto :global(img) { transform: scale(1.04); }
+  .vitrina-estado { background: var(--c-acento); color: var(--c-primario); padding: .3rem .65rem; font-size: .62rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+  .vitrina-cat { font-size: .66rem; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; opacity: .65; }
+  .vitrina-precio { font-family: var(--fuente-titulos); font-size: 1.35rem; color: var(--c-acento); }
+  .filtro { min-height: 2.75rem; padding: .5rem 1.1rem; border: 1px solid color-mix(in srgb, var(--c-fondo) 30%, transparent); font-size: .7rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; cursor: pointer; color: inherit; background: transparent; }
+  .filtro:hover { border-color: var(--c-acento); }
+  .filtro[aria-pressed='true'] { background: var(--c-acento); border-color: var(--c-acento); color: var(--c-primario); }
+  @media (max-width: 639px) { .punzon { white-space: normal; } }
+</style>
+
+<script is:inline>
+  document.querySelectorAll('[data-vitrina]').forEach(function (grupo) {
+    var lista = document.getElementById(grupo.getAttribute('data-vitrina') + '-lista');
+    if (!lista) return;
+    grupo.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-filtro]');
+      if (!b) return;
+      var f = b.getAttribute('data-filtro');
+      grupo.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      lista.querySelectorAll('[data-categoria]').forEach(function (li) { li.hidden = !!f && li.getAttribute('data-categoria') !== f; });
+    });
+  });
+</script>

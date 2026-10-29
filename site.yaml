@@ -1,0 +1,146 @@
+# Contenido de la web. Es lo único que rellena la plataforma NoExpertise.
+# Las secciones se muestran en el orden de este fichero. Para ocultar una: activa: false.
+# Apartado nuevo: un id propio (es su ancla, /#id) con `tipo:` = el diseño de otra sección o `texto`.
+nombre: Azahar Joyería
+eslogan: Joyería de autor y filigrana hecha a mano en Córdoba.
+sector: joyeria
+logo: ""          # ruta a una imagen en public/ (p. ej. /logo.svg). Vacío = nombre en texto.
+colores:
+  primario: "#0e0d0b"
+  acento: "#c9a24b"
+  fondo: "#f5f0e6"
+  texto: "#17150f"
+contacto:
+  telefono: "957 48 21 36"
+  email: taller@azaharjoyeria.es
+  direccion: Calle Judíos 9, 14004 Córdoba
+  horario: "Martes a sábado, de 10:30 a 14:00 y de 17:30 a 20:30. Lunes, con cita."
+  whatsapp: "654 21 87 30"
+redes:
+  instagram: https://www.instagram.com/
+  facebook: https://www.facebook.com/
+  linkedin: ""
+menu:
+  - { texto: Colecciones, url: "/#colecciones" }
+  - { texto: Piezas, url: "/#piezas" }
+  - { texto: El taller, url: "/#sobre" }
+  - { texto: Encargos, url: "/#encargos" }
+  - { texto: Contacto, url: "/#contacto" }
+boton_cabecera: { texto: Pedir cita, url: "/#encargos" }
+seo:
+  titulo: Azahar Joyería · Joyería artesana y filigrana en Córdoba
+  descripcion: "Taller de joyería en la judería de Córdoba: filigrana de plata, anillos de oro, alianzas a medida y transformación de joyas heredadas."
+  tipo: JewelryStore
+marca_pie: true
+
+secciones:
+  hero:
+    activa: true
+    antetitulo: Joyería de autor · Córdoba
+    titulo: Joyas hechas a mano, una a una.
+    texto: "Filigrana de plata, anillos de oro y piezas por encargo que salen de nuestro banco de trabajo en la judería, a dos calles de la Mezquita."
+    imagen: /fotos/portada.jpg
+    cta: { texto: Ver colecciones, url: "/#colecciones" }
+    cta_secundario: { texto: Encargar una pieza, url: "/#encargos" }
+
+  colecciones:
+    activa: true
+    antetitulo: Colecciones
+    titulo: Tres maneras de trabajar el metal
+    texto: "Cada colección nace de un oficio distinto del taller. Todas las piezas se pueden ajustar, grabar o hacer en otro metal."
+    cta: { texto: Ver las piezas, url: "/#piezas" }
+    colecciones:
+      - { nombre: Filigrana, texto: "Hilo de plata torcido, cortado y soldado a mano, como en los talleres cordobeses de siempre. Pendientes, broches y colgantes ligeros como el encaje.", detalle: Plata de ley 925, imagen: /fotos/coleccion-filigrana.jpg }
+      - { nombre: Patio, texto: "Anillos y colgantes que salen de las rejas, las macetas y las flores de los patios de mayo. Formas sencillas en oro y plata para llevar a diario.", detalle: "Oro de 18 k y plata", imagen: /fotos/coleccion-patio.jpg }
+      - { nombre: Barro y esmalte, texto: "Cuentas de cerámica que modelamos y esmaltamos en el horno del taller, montadas en plata. Colores de tierra, verde botella y azul cobalto.", detalle: Cerámica y plata, imagen: /fotos/coleccion-barro.jpg }
+
+  piezas:
+    activa: true
+    antetitulo: La vitrina
+    titulo: Piezas disponibles
+    texto: "Lo que tenemos ahora en el taller. Si una pieza se ha vendido, te la hacemos de nuevo en unas semanas."
+    piezas:
+      - { nombre: Pendientes Azahar, texto: "Flor de filigrana de seis pétalos con cierre de presión.", precio: "185 €", material: Plata 925, categoria: Pendientes, estado: "", imagen: /fotos/pieza-pendientes-azahar.jpg }
+      - { nombre: Anillo Reja, texto: "Sortija ancha calada con el dibujo de una reja cordobesa.", precio: "640 €", material: Oro 18 k, categoria: Anillos, estado: Pieza única, imagen: /fotos/pieza-anillo-reja.jpg }
+      - { nombre: Colgante Medina, texto: "Medalla martelada con cadena de 45 cm.", precio: "120 €", material: Plata 925, categoria: Colgantes, estado: "", imagen: /fotos/pieza-colgante-medina.jpg }
+      - { nombre: Pulsera Guadalquivir, texto: "Eslabones ovalados de plata oxidada y un cierre de mosquetón.", precio: "160 €", material: Plata oxidada, categoria: Pulseras, estado: "", imagen: /fotos/pieza-pulsera-guadalquivir.jpg }
+      - { nombre: Alianzas Califa, texto: "Pareja de alianzas de media caña con grabado interior a mano.", precio: "desde 890 € la pareja", material: Oro 18 k, categoria: Anillos, estado: Por encargo, imagen: /fotos/pieza-alianzas-califa.jpg }
+      - { nombre: Pendientes Cobalto, texto: "Cuenta de cerámica esmaltada en azul colgada de un aro fino.", precio: "95 €", material: Cerámica y plata, categoria: Pendientes, estado: "", imagen: /fotos/pieza-pendientes-cobalto.jpg }
+
+  sobre:
+    activa: true
+    antetitulo: El taller
+    titulo: Un banco de trabajo en la judería
+    declaracion: "Una joya no se fabrica: se lima, se suelda y se pule hasta que parece que siempre estuvo ahí."
+    texto: |
+      Azahar abrió en 2009 en una casa con patio de la calle Judíos. Delante está la tienda; al fondo, el taller, con el banco de joyero, el horno de esmaltar y las herramientas que heredamos de un platero del barrio.
+
+      Somos tres. Diseñamos, fundimos, engastamos y pulimos aquí mismo: sabemos quién hizo cada pieza y podemos arreglarla dentro de veinte años.
+    imagen: /fotos/taller.jpg
+    personas:
+      - { nombre: Lucía Montoro, cargo: Joyera y fundadora, foto: /placeholders/persona.svg }
+      - { nombre: Rafael Cañete, cargo: Maestro platero · filigrana, foto: /placeholders/persona.svg }
+      - { nombre: Inés Barea, cargo: Ceramista y esmaltes, foto: /placeholders/persona.svg }
+
+  proceso:
+    activa: true
+    antetitulo: Cómo nace una pieza
+    titulo: Del boceto a tu mano
+    texto: "Lo mismo para una pieza de la vitrina que para un encargo: cuatro pasos, todos en el taller."
+    imagen: /fotos/proceso.jpg
+    items:
+      - { titulo: Boceto, texto: "Dibujamos la pieza a lápiz y elegimos contigo el metal, la piedra y la medida.", duracion: 1 semana }
+      - { titulo: Modelado, texto: "Tallamos el modelo en cera o torcemos el hilo de la filigrana a mano.", duracion: 1-2 semanas }
+      - { titulo: Fundición y soldadura, texto: "Fundimos el metal, soldamos las piezas y ajustamos la medida exacta.", duracion: 1 semana }
+      - { titulo: Engaste y pulido, texto: "Montamos las piedras, pulimos y grabamos. Te avisamos para la prueba.", duracion: 3-5 días }
+
+  encargos:
+    activa: true
+    antetitulo: Encargos a medida
+    titulo: Tu joya, desde cero
+    texto: "Cuéntanos qué pieza tienes en la cabeza o qué joya quieres transformar. Te llamamos para una primera cita en el taller."
+    nota: "Primera cita sin compromiso. Te damos un presupuesto cerrado antes de empezar."
+    items:
+      - { titulo: Alianzas y compromiso, texto: "Anillos de pedida y alianzas en oro o platino, con grabado a mano." }
+      - { titulo: Joyas heredadas, texto: "Fundimos o rehacemos el oro de la familia en una pieza nueva." }
+      - { titulo: Sellos y grabados, texto: "Sellos de escudo o iniciales, grabados a buril." }
+      - { titulo: Arreglos y restauración, texto: "Soldaduras, engastes sueltos, cadenas rotas y limpieza." }
+
+  galeria:
+    activa: true
+    antetitulo: Galería
+    titulo: El taller por dentro
+    galeria:
+      - /fotos/galeria-banco.jpg
+      - /fotos/galeria-filigrana.jpg
+      - /fotos/galeria-horno.jpg
+      - /fotos/fachada.jpg
+      - /fotos/coleccion-patio.jpg
+      - /fotos/proceso.jpg
+
+  opiniones:
+    activa: true
+    antetitulo: Opiniones
+    titulo: Quien ya lleva una pieza nuestra
+    testimonios:
+      - { texto: "Nos hicieron las alianzas con el oro de los anillos de mi abuela. Las llevamos todos los días y siguen como el primero.", autor: Marta y Javier }
+      - { texto: "Entré a por unos pendientes de filigrana y salí con una clase de historia del barrio. Trato cercano y piezas preciosas.", autor: Carmen R. }
+      - { texto: "Me arreglaron un broche que nadie quería tocar. Plazo cumplido y un precio justo.", autor: Antonio L. }
+
+  preguntas:
+    activa: true
+    antetitulo: Preguntas frecuentes
+    titulo: Antes de venir al taller
+    preguntas:
+      - { pregunta: "¿Cuánto tarda un encargo a medida?", respuesta: "Entre tres y seis semanas, según la pieza. En la primera cita te damos una fecha de entrega y la cumplimos." }
+      - { pregunta: "¿Puedo traer oro o joyas antiguas para hacer una pieza nueva?", respuesta: "Sí. Pesamos el metal delante de ti, te decimos cuánto se aprovecha y lo descontamos del presupuesto." }
+      - { pregunta: "¿Hacéis cambios de talla?", respuesta: "Sí. En las piezas del taller el primer cambio de talla es gratis. También ajustamos anillos de otras joyerías." }
+      - { pregunta: "¿Las piezas llevan garantía?", respuesta: "Todas llevan dos años de garantía y el punzón del taller. Los arreglos de nuestras piezas no caducan." }
+      - { pregunta: "¿Enviáis fuera de Córdoba?", respuesta: "Sí, por mensajería asegurada a toda España. Escríbenos y te contamos cómo hacerlo." }
+
+  contacto:
+    activa: true
+    antetitulo: Contacto
+    titulo: Ven a vernos al taller
+    texto: "Estamos en la judería, a dos calles de la Mezquita. Si vienes por un encargo, llama antes y te reservamos la mesa del taller."
+    imagen: /fotos/fachada.jpg

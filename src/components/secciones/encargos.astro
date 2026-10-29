@@ -1,0 +1,68 @@
+---
+// Encargos a medida: banda partida a sangre. A la izquierda, el oro con el titular y lo que se puede encargar
+// (items, numerados); a la derecha, el negro con el formulario del encargo (mailto): tipo de pieza (sale de los
+// items), fecha aproximada y qué tienes en la cabeza. Campos: antetitulo, titulo, texto, nota, boton e
+// items[] {titulo, texto}. Sin items, el formulario no lleva el desplegable de tipo de pieza.
+import { seccion, site } from '../../data/site';
+import FormularioContacto from '../ui/FormularioContacto.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const tipos = s ? s.items.filter((it) => it && it.titulo) : [];
+const nota = String(s?.nota ?? '').trim();
+const boton = String(s?.boton ?? '').trim() || 'Pedir cita en el taller';
+---
+
+{
+  s && (
+    <section id={id} class="grid md:grid-cols-2">
+      <div class="banda-oro flex flex-col justify-center px-4 py-16 md:px-12 md:py-24 lg:px-20 xl:pl-[max(5rem,calc((100vw-90rem)/2+2rem))]">
+        {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+        {s.titulo && <h2 class="titulo-seccion">{s.titulo}</h2>}
+        {s.texto && <p class="mt-6 max-w-[34rem] text-lg">{s.texto}</p>}
+        {tipos.length > 0 && (
+          <ol class="encargos-lista mt-12 max-w-[36rem]">
+            {tipos.map((t, i) => (
+              <li class="grid grid-cols-[2.5rem_1fr] gap-x-3 py-5">
+                <span class="font-display text-2xl italic" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3 class="text-[1.6rem] leading-tight">{t.titulo}</h3>
+                  {t.texto && <p class="mt-1 opacity-85">{t.texto}</p>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+      <div class="banda-oscura flex flex-col justify-center px-4 py-16 md:px-12 md:py-24 lg:px-20 xl:pr-[max(5rem,calc((100vw-90rem)/2+2rem))]">
+        <div class="w-full max-w-[36rem]">
+          <FormularioContacto prefijo={`${id}-f`} boton={boton} asunto={`Encargo a medida · ${site.nombre}`} etiquetaMensaje="¿Qué pieza tienes en la cabeza?">
+            <div slot="extra" class="formulario-doble">
+              {tipos.length > 0 && (
+                <div class="campo">
+                  <label for={`${id}-f-tipo`}>Tipo de encargo</label>
+                  <select id={`${id}-f-tipo`} name="tipo">
+                    {tipos.map((t) => <option>{t.titulo}</option>)}
+                    <option>Otro</option>
+                  </select>
+                </div>
+              )}
+              <div class="campo">
+                <label for={`${id}-f-fecha`}>Para cuándo (aprox.)</label>
+                <input id={`${id}-f-fecha`} name="fecha" type="date" />
+              </div>
+            </div>
+          </FormularioContacto>
+          {nota && <p class="encargos-nota mt-8 pt-6">{nota}</p>}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .encargos-lista li { border-top: 1px solid color-mix(in srgb, var(--c-primario) 30%, transparent); }
+  .encargos-lista li:last-child { border-bottom: 1px solid color-mix(in srgb, var(--c-primario) 30%, transparent); }
+  .encargos-nota { border-top: 1px solid var(--linea-oro); font-family: var(--fuente-titulos); font-style: italic; font-size: 1.25rem; color: var(--c-acento); }
+  :global(.banda-oscura input[type='date']) { color-scheme: dark; }
+</style>
